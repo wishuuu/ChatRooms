@@ -1,37 +1,58 @@
-﻿using ChatRooms.Domain;
+﻿using System.Collections.ObjectModel;
+using Bogus;
+using ChatRooms.Domain;
 using ChatRooms.Domain.SearchCriterias;
 
 namespace ChatRooms.FakeInfrastructure;
 
-public class FakeEntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : BaseEntity
+public abstract class FakeEntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : BaseEntity
 {
-    public Task<TEntity> GetByIdAsync(int id)
+    protected IEnumerable<TEntity> Entities;
+    protected FakeEntityRepository(Faker<TEntity> faker, int count)
     {
-        throw new NotImplementedException();
+        Entities = faker.Generate(count);
     }
 
-    public Task<IReadOnlyList<TEntity>> ListAllAsync()
+    public Task<int> GetNextIdAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            return Task.FromResult(Entities.Max(e => e.Id) + 1);
+        }
+        catch (InvalidOperationException e)
+        {
+            return Task.FromResult(1);
+        }
+    }
+    public Task<TEntity?> GetByIdAsync(int id)
+    {
+        return Task.FromResult(Entities.Where(x => x.Id == id).DefaultIfEmpty(null).First());
     }
 
-    public Task<IReadOnlyList<TEntity>> ListAsync(SearchCriteria<TEntity> searchCriteria)
+    public Task<IEnumerable<TEntity>> ListAllAsync()
     {
-        throw new NotImplementedException();
+        return Task.FromResult(Entities);
+    }
+
+    public Task<IEnumerable<TEntity>> ListAsync(SearchCriteria<TEntity> searchCriteria)
+    {
+        return Task.FromResult(Entities.Where(searchCriteria.Predicate));
     }
 
     public Task<TEntity> AddAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(Entities.Append(entity).Last());
     }
 
     public Task UpdateAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        Entities = Entities.Select(e => e.Id == entity.Id ? entity : e);
+        return Task.CompletedTask;
     }
 
     public Task DeleteAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        Entities = Entities.Where(e => e.Id != entity.Id);
+        return Task.CompletedTask;
     }
 }

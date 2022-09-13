@@ -3,5 +3,12 @@
 public class RoomSearchCriteria : SearchCriteria<Room>
 {
     public string Name { get; set; }
-    public int OwerId { get; set; }
+    public int OwnerId { get; set; } = -1;
+    public override bool Predicate(Room entity)
+    {
+        if (!base.Predicate(entity)) return false;
+        if (!string.IsNullOrEmpty(Name) && !entity.Name.Contains(Name)) return false;
+        if (OwnerId != -1 && entity.Owner.Id != OwnerId) return false;
+        return true;
+    }
 }

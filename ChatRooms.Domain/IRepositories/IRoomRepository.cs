@@ -4,6 +4,6 @@ namespace ChatRooms.Domain;
 
 public interface IRoomRepository : IEntityRepository<Room>
 {
-    Task<IReadOnlyList<Room>> ListAsync(RoomSearchCriteria searchCriteria);
-    Task<IReadOnlyList<Message>> ListMessagesAsync(int roomId, int amount, int offset=0);
+    Task<IEnumerable<Room>> ListAsync(RoomSearchCriteria searchCriteria);
+    Task<IEnumerable<Message>> ListMessagesAsync(int roomId, int amount, int offset=0);
 }

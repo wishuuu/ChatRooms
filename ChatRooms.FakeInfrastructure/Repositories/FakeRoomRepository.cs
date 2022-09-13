@@ -1,17 +1,24 @@
-﻿using ChatRooms.Domain;
+﻿using Bogus;
+using ChatRooms.Domain;
 using ChatRooms.Domain.SearchCriterias;
 
 namespace ChatRooms.FakeInfrastructure;
 
 public class FakeRoomRepository : FakeEntityRepository<Room>, IRoomRepository
 {
-    public Task<IReadOnlyList<Room>> ListAsync(RoomSearchCriteria searchCriteria)
+    public FakeRoomRepository(Faker<Room> faker, FakeInfrastructureOptions options) : base(faker, options.RecordsCount.Rooms)
     {
-        throw new NotImplementedException();
+    }
+    
+    public Task<IEnumerable<Room>> ListAsync(RoomSearchCriteria searchCriteria)
+    {
+        return Task.FromResult(Entities.Where(searchCriteria.Predicate));
     }
 
-    public Task<IReadOnlyList<Message>> ListMessagesAsync(int roomId, int amount, int offset = 0)
+    public Task<IEnumerable<Message>> ListMessagesAsync(int roomId, int amount, int offset = 0)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(Entities.First(x => x.Id == roomId).Messages.Skip(offset).Take(amount));
     }
+
+    
 }

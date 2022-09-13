@@ -1,12 +1,18 @@
-﻿using ChatRooms.Domain;
+﻿using Bogus;
+using ChatRooms.Domain;
 using ChatRooms.Domain.SearchCriterias;
 
 namespace ChatRooms.FakeInfrastructure;
 
 public class FakeUserRepository : FakeEntityRepository<User>, IUserRepository
 {
-    public Task<IReadOnlyList<User>> ListAsync(UserSearchCriteria spec)
+    public FakeUserRepository(Faker<User> faker, FakeInfrastructureOptions options) : base(faker, options.RecordsCount.Users)
     {
-        throw new NotImplementedException();
     }
+    public Task<IEnumerable<User>> ListAsync(UserSearchCriteria searchCriteria)
+    {
+        return Task.FromResult(Entities.Where(searchCriteria.Predicate));
+    }
+
+    
 }
