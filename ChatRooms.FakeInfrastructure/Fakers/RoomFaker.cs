@@ -1,6 +1,21 @@
-﻿namespace ChatRooms.FakeInfrastructure.Fakers;
+﻿using Bogus;
+using ChatRooms.Domain;
 
-public class RoomFaker
+namespace ChatRooms.FakeInfrastructure.Fakers;
+
+public sealed class RoomFaker : Faker<Room>
 {
-    
+    public RoomFaker(IUserRepository userRepository)
+    {
+        var usersTask = userRepository.ListAllAsync();
+        usersTask.Wait();
+        var users = usersTask.Result;
+
+        StrictMode(true);
+        RuleFor(r => r.Id, f => f.IndexFaker);
+        RuleFor(r => r.Name, f => f.Lorem.Word());
+        RuleFor(r => r.Owner, f => f.PickRandom<User>(users));
+        RuleFor(r => r.Users, (f, r)=> f.PickRandom(users.Where(u => u.Id != r.Owner.Id), 3).Concat(new []{ r.Owner }));
+        RuleFor(r => r.Messages, (f, r) =>new MessageFaker(r.Users).Generate(10));
+    }
 }

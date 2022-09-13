@@ -3,7 +3,7 @@ using ChatRooms.Domain.SearchCriterias;
 
 namespace ChatRooms.FakeInfrastructure;
 
-public class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : BaseEntity
+public class FakeEntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : BaseEntity
 {
     public Task<TEntity> GetByIdAsync(int id)
     {

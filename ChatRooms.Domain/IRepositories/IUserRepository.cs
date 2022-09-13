@@ -1,6 +1,8 @@
-﻿namespace ChatRooms.Domain;
+﻿using ChatRooms.Domain.SearchCriterias;
 
-public interface IUserRepository
+namespace ChatRooms.Domain;
+
+public interface IUserRepository : IEntityRepository<User>
 {
-    
+    Task<IReadOnlyList<User>> ListAsync(UserSearchCriteria spec);
 }

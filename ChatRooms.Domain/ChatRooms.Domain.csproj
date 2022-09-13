@@ -6,12 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Bogus" Version="34.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\ChatRooms.Domain\ChatRooms.Domain.csproj" />
-    </ItemGroup>
-
 </Project>

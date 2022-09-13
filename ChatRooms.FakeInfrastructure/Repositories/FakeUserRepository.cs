@@ -3,7 +3,7 @@ using ChatRooms.Domain.SearchCriterias;
 
 namespace ChatRooms.FakeInfrastructure;
 
-public class UserRepository : EntityRepository<User>, IUserRepository
+public class FakeUserRepository : FakeEntityRepository<User>, IUserRepository
 {
     public Task<IReadOnlyList<User>> ListAsync(UserSearchCriteria spec)
     {

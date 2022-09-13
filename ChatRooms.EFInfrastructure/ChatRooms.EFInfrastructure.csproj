@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ChatRooms.Domain\ChatRooms.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

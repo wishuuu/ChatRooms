@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms", "ChatRooms\ChatRooms.csproj", "{6E891249-818D-456C-B8CF-15DFBDB56A8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms.Domain", "ChatRooms.Domain\ChatRooms.Domain.csproj", "{5D7186BC-CB10-4B3B-9EF0-342ED9885F87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms.FakeInfrastructure", "ChatRooms.FakeInfrastructure\ChatRooms.FakeInfrastructure.csproj", "{B05CA6B1-7E59-4E1A-9EAF-08A41CF271F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms.EFInfrastructure", "ChatRooms.EFInfrastructure\ChatRooms.EFInfrastructure.csproj", "{A5956C71-09A2-4A55-8145-253BE66A49AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E891249-818D-456C-B8CF-15DFBDB56A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E891249-818D-456C-B8CF-15DFBDB56A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E891249-818D-456C-B8CF-15DFBDB56A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E891249-818D-456C-B8CF-15DFBDB56A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D7186BC-CB10-4B3B-9EF0-342ED9885F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D7186BC-CB10-4B3B-9EF0-342ED9885F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D7186BC-CB10-4B3B-9EF0-342ED9885F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D7186BC-CB10-4B3B-9EF0-342ED9885F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05CA6B1-7E59-4E1A-9EAF-08A41CF271F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05CA6B1-7E59-4E1A-9EAF-08A41CF271F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05CA6B1-7E59-4E1A-9EAF-08A41CF271F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05CA6B1-7E59-4E1A-9EAF-08A41CF271F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5956C71-09A2-4A55-8145-253BE66A49AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5956C71-09A2-4A55-8145-253BE66A49AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5956C71-09A2-4A55-8145-253BE66A49AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5956C71-09A2-4A55-8145-253BE66A49AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
