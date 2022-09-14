@@ -4,11 +4,6 @@ public class FakeInfrastructureOptions
 
 {
     public bool GenerateFakeData { get; set; }
-    public RecordsCount RecordsCount { get; set; } = new RecordsCount();
-}
-
-public class RecordsCount
-{
-    public int Rooms;
-    public int Users;
+    public int RoomsRecordsCount { get; set; }
+    public int UsersRecordsCount { get; set; }
 }
