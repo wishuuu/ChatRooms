@@ -7,7 +7,7 @@ namespace ChatRooms.FakeInfrastructure;
 
 public class FakeRoomRepository : FakeEntityRepository<Room>, IRoomRepository
 {
-    public FakeRoomRepository(Faker<Room> faker, IOptions<FakeInfrastructureOptions> options) : base(faker, 10)
+    public FakeRoomRepository(Faker<Room> faker, IOptions<FakeInfrastructureOptions> options) : base(faker, options.Value.RoomsRecordsCount)
     {
     }
     

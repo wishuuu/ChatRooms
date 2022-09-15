@@ -15,7 +15,7 @@ builder.Services
     .AddSingleton<IUserRepository, FakeUserRepository>()
     .AddSingleton<IRoomRepository, FakeRoomRepository>();
 
-// builder.Services.Configure<IOptions<FakeInfrastructureOptions>>(builder.Configuration.GetSection("FakeInfrastructureOptions"));
+builder.Services.Configure<FakeInfrastructureOptions>(builder.Configuration.GetSection("FakeInfrastructureOptions"));
 
 string environmentName = builder.Environment.EnvironmentName;
 builder.Configuration.AddJsonFile("appsettings.json", false);
