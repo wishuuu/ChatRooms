@@ -22,6 +22,7 @@ builder.Configuration.AddJsonFile("appsettings.json", false);
 builder.Configuration.AddJsonFile($"appsettings.{environmentName}.json", false);
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

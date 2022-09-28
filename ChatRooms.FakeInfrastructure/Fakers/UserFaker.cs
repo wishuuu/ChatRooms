@@ -14,5 +14,8 @@ public sealed class UserFaker : Faker<User>
         RuleFor(u => u.Email, (f, u) => u.Nickname + "@" + f.Internet.DomainName());
         RuleFor(u => u.Role, f => (UserRole)(f.Random.Bool(0.1f)? 1: 2));
         RuleFor(u => u.IsBanned, (f, u) => u.Role != UserRole.Admin && f.Random.Bool(0.1f));
+        RuleFor(u => u.LastActivity, f => f.Date.Past());
+        RuleFor(u => u.LastMessage, f => f.Date.Past());
+        RuleFor(u => u.AllowMailing, f => f.Random.Bool());
     }
 }

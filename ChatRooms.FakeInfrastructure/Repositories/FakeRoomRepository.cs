@@ -20,4 +20,10 @@ public class FakeRoomRepository : FakeEntityRepository<Room>, IRoomRepository
     {
         return Task.FromResult(Entities.First(x => x.Id == roomId).Messages.Skip(offset).Take(amount));
     }
+
+    public Task AddMessageAsync(int roomId, Message message)
+    {
+        Entities.First(x => x.Id == roomId).Messages.Add(message);
+        return Task.CompletedTask;
+    }
 }

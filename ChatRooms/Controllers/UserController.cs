@@ -1,4 +1,6 @@
-﻿using ChatRooms.Domain;
+﻿using AutoMapper;
+using ChatRooms.Domain;
+using ChatRooms.Domain.DTOs;
 using ChatRooms.Domain.SearchCriterias;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +9,12 @@ namespace ChatRooms.Controllers;
 public class UserController : BaseController
 {
     private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
     
-    public UserController(IUserRepository userRepository)
+    public UserController(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
 
     [HttpGet]

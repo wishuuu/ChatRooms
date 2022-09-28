@@ -1,4 +1,5 @@
-﻿using ChatRooms.Domain;
+﻿using AutoMapper;
+using ChatRooms.Domain;
 using ChatRooms.Domain.SearchCriterias;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +8,12 @@ namespace ChatRooms.Controllers;
 public class RoomController : BaseController
 {
     private readonly IRoomRepository _roomRepository;
+    private readonly IMapper _mapper;
     
-    public RoomController(IRoomRepository roomRepository)
+    public RoomController(IRoomRepository roomRepository, IMapper mapper)
     {
         _roomRepository = roomRepository;
+        _mapper = mapper;
     }
     
     
