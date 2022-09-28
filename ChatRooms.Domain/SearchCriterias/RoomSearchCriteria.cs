@@ -2,8 +2,8 @@
 
 public class RoomSearchCriteria : SearchCriteria<Room>
 {
-    public string Name { get; set; }
-    public int OwnerId { get; set; } = -1;
+    public string? Name { get; }
+    public int OwnerId { get; } = -1;
     public override bool Predicate(Room entity)
     {
         if (!base.Predicate(entity)) return false;

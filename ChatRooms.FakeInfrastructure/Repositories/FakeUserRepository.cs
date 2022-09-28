@@ -15,5 +15,8 @@ public class FakeUserRepository : FakeEntityRepository<User>, IUserRepository
         return Task.FromResult(Entities.Where(searchCriteria.Predicate));
     }
 
-    
+    public Task<User?> GetByNicknameAsync(string nickname)
+    {
+        return Task.FromResult(Entities.FirstOrDefault(u => u.Nickname == nickname));
+    }
 }
