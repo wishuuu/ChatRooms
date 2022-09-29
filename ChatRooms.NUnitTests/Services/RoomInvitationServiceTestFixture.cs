@@ -50,6 +50,6 @@ public class RoomInvitationServiceTestFixture
         
         expected.Expiration = decryptedRoom!.Expiration;
         
-        AssertExt.AreEqualByJson(decryptedRoom, Is.EqualTo(expected));
+        AssertExt.AreEqualByJson(decryptedRoom, expected);
     }
 }
