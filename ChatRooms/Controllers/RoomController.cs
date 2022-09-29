@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
+using ChatRooms.Application.InvitationService;
 using ChatRooms.Domain;
 using ChatRooms.Domain.SearchCriterias;
 using Microsoft.AspNetCore.Mvc;
@@ -100,4 +101,26 @@ public class RoomController : BaseController
     {
         return Ok(await _roomRepository.ListAsync(searchCriteria));
     }
+
+    [HttpGet("invitation")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetInvitation([FromQuery] int roomId, [FromQuery] int? userId, [FromServices] IUserRepository userRepository, [FromServices] IRoomInvitationService roomInvitationService)
+    {
+        var room = await _roomRepository.GetByIdAsync(roomId);
+        if (room == null)
+        {
+            return NotFound();
+        }
+        
+        var user = await userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(roomInvitationService.CreateInvitation(roomId, userId));
+    }
+
 }

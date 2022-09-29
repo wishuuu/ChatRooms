@@ -1,10 +1,14 @@
 using System.Text;
 using Bogus;
+using ChatRooms.Application.InvitationService;
 using ChatRooms.Authorization;
 using ChatRooms.Domain;
 using ChatRooms.FakeInfrastructure;
 using ChatRooms.FakeInfrastructure.Fakers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -22,7 +26,8 @@ builder.Services
 
 builder.Services
     .AddSingleton<IAuthService, AuthService>()
-    .AddSingleton<ITokenService, JwtTokenService>();
+    .AddSingleton<ITokenService, JwtTokenService>()
+    .AddSingleton<IRoomInvitationService, RoomInvitationService>();
 
 string secretKey = "eyJhbGciOiJIUzI1NiJ9.ew0KICAic3ViIjogIjEyMzQ1Njc4OTAiLA0KICAibmFtZSI6ICJBbmlzaCBOYXRoIiwNCiAgImlhdCI6IDE1MTYyMzkwMjINCn0.0qnqLbn5A-pTPqD8k8Y-f0U6bo_tzF53ktJ-rpH41Ws";
 string issuer = "ChatRooms";
@@ -48,7 +53,16 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.Configure<FakeInfrastructureOptions>(builder.Configuration.GetSection("FakeInfrastructureOptions"));
+builder.Services.AddDataProtection()
+    .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
+    {
+        EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
+        ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+    });
+
+builder.Services
+    .Configure<FakeInfrastructureOptions>(builder.Configuration.GetSection("FakeInfrastructureOptions"))
+    .Configure<RoomInvitationOptions>(builder.Configuration.GetSection("RoomInvitationOptions"));
 
 string environmentName = builder.Environment.EnvironmentName;
 builder.Configuration.AddJsonFile("appsettings.json", false);

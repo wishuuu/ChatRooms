@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms.NUnitTests", "Cha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms.MailerService", "ChatRooms.MailerService\ChatRooms.MailerService.csproj", "{40FD5EA6-0589-42F0-AB2D-60159188267E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRooms.Application", "ChatRooms.Application\ChatRooms.Application.csproj", "{6C277E81-7B52-4BA3-B367-F400E31F7ED5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{40FD5EA6-0589-42F0-AB2D-60159188267E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40FD5EA6-0589-42F0-AB2D-60159188267E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40FD5EA6-0589-42F0-AB2D-60159188267E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C277E81-7B52-4BA3-B367-F400E31F7ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C277E81-7B52-4BA3-B367-F400E31F7ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C277E81-7B52-4BA3-B367-F400E31F7ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C277E81-7B52-4BA3-B367-F400E31F7ED5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

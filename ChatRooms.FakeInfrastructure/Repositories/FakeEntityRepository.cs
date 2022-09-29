@@ -24,8 +24,9 @@ public abstract class FakeEntityRepository<TEntity> : IEntityRepository<TEntity>
             return Task.FromResult(1);
         }
     }
-    public Task<TEntity?> GetByIdAsync(int id)
+    public Task<TEntity?> GetByIdAsync(int? id)
     {
+        if (id == null) return Task.FromResult<TEntity?>(null);
         return Task.FromResult(Entities.Where(x => x.Id == id).DefaultIfEmpty(null).First());
     }
 

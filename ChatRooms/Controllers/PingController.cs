@@ -16,7 +16,8 @@ public class PingController : BaseController
     [HttpGet("authorized")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Authorize(Roles="User,Admin")]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [Authorize(Roles="Admin")]
     public IActionResult AuthenticatedPing()
     {
         return Ok("Authenticated Pong");
