@@ -1,4 +1,4 @@
-﻿namespace ChatRooms.Authorization;
+﻿namespace ChatRooms.Application.Authorization;
 
 public class AuthModel
 {

@@ -4,7 +4,7 @@ using System.Text;
 using ChatRooms.Domain;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ChatRooms.Authorization;
+namespace ChatRooms.Application.Authorization;
 
 public class JwtTokenService : ITokenService
 {

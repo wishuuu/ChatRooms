@@ -13,7 +13,9 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="6.0.9" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
       <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
     </ItemGroup>
 
 </Project>

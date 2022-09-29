@@ -1,6 +1,6 @@
 ﻿using ChatRooms.Domain;
 
-namespace ChatRooms.Authorization;
+namespace ChatRooms.Application.Authorization;
 
 public interface ITokenService
 {

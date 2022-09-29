@@ -1,7 +1,7 @@
 using System.Text;
 using Bogus;
+using ChatRooms.Application.Authorization;
 using ChatRooms.Application.InvitationService;
-using ChatRooms.Authorization;
 using ChatRooms.Domain;
 using ChatRooms.FakeInfrastructure;
 using ChatRooms.FakeInfrastructure.Fakers;
@@ -28,6 +28,7 @@ builder.Services
     .AddSingleton<IAuthService, AuthService>()
     .AddSingleton<ITokenService, JwtTokenService>()
     .AddSingleton<IRoomInvitationService, RoomInvitationService>();
+
 
 string secretKey = "eyJhbGciOiJIUzI1NiJ9.ew0KICAic3ViIjogIjEyMzQ1Njc4OTAiLA0KICAibmFtZSI6ICJBbmlzaCBOYXRoIiwNCiAgImlhdCI6IDE1MTYyMzkwMjINCn0.0qnqLbn5A-pTPqD8k8Y-f0U6bo_tzF53ktJ-rpH41Ws";
 string issuer = "ChatRooms";

@@ -1,4 +1,4 @@
-﻿using ChatRooms.Authorization;
+﻿using ChatRooms.Application.Authorization;
 using ChatRooms.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

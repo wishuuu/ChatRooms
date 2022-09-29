@@ -1,5 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
+using ChatRooms.Application.Authorization;
 using ChatRooms.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatRooms.Controllers;
@@ -32,14 +35,34 @@ public class MessageController : BaseController
     [HttpPost("{roomId:int}")]
     [ProducesResponseType( StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Send(int roomId, [FromBody] Message message)
+    [Authorize]
+    public async Task<IActionResult> Send(int roomId, string message, [FromServices] IUserRepository userRepository)
     {
         var room = await _roomRepository.GetByIdAsync(roomId);
         if (room == null)
         {
             return NotFound();
         }
-        await _roomRepository.AddMessageAsync(roomId, message);
+
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (AuthFunc.EnsureUserIsInRoom(identity, room, out int userId))
+        {
+            return Unauthorized();
+        }
+
+        Message msg = new Message()
+        {
+            Text = message,
+            CreatedAt = DateTime.Now,
+            Sender = await userRepository.GetByIdAsync(userId)
+        };
+
+        await _roomRepository.AddMessageAsync(roomId, msg);
         return CreatedAtAction(nameof(Get), new {roomId, message}, message);
+
+
+
+
+
     }
 }
