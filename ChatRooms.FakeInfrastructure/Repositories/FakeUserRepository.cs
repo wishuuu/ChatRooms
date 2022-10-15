@@ -12,7 +12,7 @@ public class FakeUserRepository : FakeEntityRepository<User>, IUserRepository
     }
     public Task<IEnumerable<User>> ListAsync(UserSearchCriteria searchCriteria)
     {
-        return Task.FromResult(Entities.Where(searchCriteria.Predicate));
+        return Task.FromResult(Entities.Where(searchCriteria.Predicate).Take(20));
     }
 
     public Task<User?> GetByNicknameAsync(string nickname)

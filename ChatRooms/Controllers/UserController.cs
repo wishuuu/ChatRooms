@@ -2,6 +2,7 @@
 using ChatRooms.Domain;
 using ChatRooms.Domain.DTOs;
 using ChatRooms.Domain.SearchCriterias;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatRooms.Controllers;
@@ -19,6 +20,8 @@ public class UserController : BaseController
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+    //[Authorize(Roles = "Admin")]
+    // TODO: Uncomment authorization after testing
     public async Task<IActionResult> Get()
     {
         return Ok(await _userRepository.ListAllAsync());
@@ -27,6 +30,7 @@ public class UserController : BaseController
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> Get(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
@@ -41,8 +45,12 @@ public class UserController : BaseController
     [HttpPost]
     [ProducesResponseType(typeof(User), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [AllowAnonymous]
     public async Task<IActionResult> Post([FromBody] User user)
     {
+        // TODO : Add validation if fields are empty
+        // TODO : Add validation if email is already used
+        // TODO : Add validation if username is already used
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -57,6 +65,7 @@ public class UserController : BaseController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> Put(int id, [FromBody] User user)
     {
         if (!ModelState.IsValid)
@@ -74,6 +83,8 @@ public class UserController : BaseController
         {
             return NotFound();
         }
+        
+        // TODO : Add validation if user update his own profile
 
         await _userRepository.UpdateAsync(user);
         return NoContent();
@@ -82,6 +93,7 @@ public class UserController : BaseController
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
@@ -96,6 +108,7 @@ public class UserController : BaseController
     
     [HttpGet("search")]
     [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<IActionResult> Search([FromQuery] UserSearchCriteria searchCriteria)
     {
         return Ok(await _userRepository.ListAsync(searchCriteria));

@@ -16,10 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Hubs" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ChatRooms.Application\ChatRooms.Application.csproj" />
       <ProjectReference Include="..\ChatRooms.EFInfrastructure\ChatRooms.EFInfrastructure.csproj" />
       <ProjectReference Include="..\ChatRooms.FakeInfrastructure\ChatRooms.FakeInfrastructure.csproj" />

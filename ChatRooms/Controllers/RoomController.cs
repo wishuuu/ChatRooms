@@ -1,7 +1,10 @@
+using System.Security.Claims;
 using AutoMapper;
+using ChatRooms.Application.Authorization;
 using ChatRooms.Application.InvitationService;
 using ChatRooms.Domain;
 using ChatRooms.Domain.SearchCriterias;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatRooms.Controllers;
@@ -20,6 +23,8 @@ public class RoomController : BaseController
     
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Room>), StatusCodes.Status200OK)]
+    //[Authorize(Roles = "Admin")]
+    // TODO: Uncomment authorization after testing
     public async Task<IActionResult> Get()
     {
         return Ok(await _roomRepository.ListAllAsync());
@@ -28,44 +33,57 @@ public class RoomController : BaseController
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(Room), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> Get(int id)
     {
-        var user = await _roomRepository.GetByIdAsync(id);
-        if (user == null)
+        var room = await _roomRepository.GetByIdAsync(id);
+        if (room == null)
         {
             return NotFound();
         }
+        
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (AuthFunc.EnsureUserIsInRoom(identity, room, out int _))
+        {
+            return Unauthorized();
+        }
 
-        return Ok(user);
+        return Ok(room);
     }
     
     [HttpPost]
     [ProducesResponseType(typeof(Room), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Room user)
+    [Authorize]
+    public async Task<IActionResult> Post([FromBody] Room room)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+        
+        //TODO check if room with same name already exists
+        //TODO update room with logged user as owner
+        //TODO add user to room
 
-        user.Id = await _roomRepository.GetNextIdAsync();
-        await _roomRepository.AddAsync(user);
-        return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+        room.Id = await _roomRepository.GetNextIdAsync();
+        await _roomRepository.AddAsync(room);
+        return CreatedAtAction(nameof(Get), new { id = room.Id }, room);
     }
     
     [HttpPut("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Put(int id, [FromBody] Room user)
+    [Authorize]
+    public async Task<IActionResult> Put(int id, [FromBody] Room room)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
-        if (id != user.Id)
+        if (id != room.Id)
         {
             return BadRequest();
         }
@@ -75,28 +93,42 @@ public class RoomController : BaseController
         {
             return NotFound();
         }
+        
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (!AuthFunc.EnsureUserIsRoomOwner(identity, existingRoom, out int _))
+        {
+            return Unauthorized();
+        }
 
-        await _roomRepository.UpdateAsync(user);
+        await _roomRepository.UpdateAsync(room);
         return NoContent();
     }
     
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
-        var user = await _roomRepository.GetByIdAsync(id);
-        if (user == null)
+        var room = await _roomRepository.GetByIdAsync(id);
+        if (room == null)
         {
             return NotFound();
         }
+        
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (!AuthFunc.EnsureUserIsRoomOwner(identity, room, out int _))
+        {
+            return Unauthorized();
+        }
 
-        await _roomRepository.DeleteAsync(user);
+        await _roomRepository.DeleteAsync(room);
         return NoContent();
     }
     
     [HttpGet("search")]
     [ProducesResponseType(typeof(IEnumerable<Room>), StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<IActionResult> Search([FromQuery] RoomSearchCriteria searchCriteria)
     {
         return Ok(await _roomRepository.ListAsync(searchCriteria));
@@ -106,6 +138,7 @@ public class RoomController : BaseController
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> GetInvitation([FromQuery] int roomId, [FromQuery] int? userId, [FromServices] IUserRepository userRepository, [FromServices] IRoomInvitationService roomInvitationService)
     {
         var room = await _roomRepository.GetByIdAsync(roomId);
@@ -118,6 +151,12 @@ public class RoomController : BaseController
         if (user == null)
         {
             return NotFound();
+        }
+        
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (AuthFunc.EnsureUserIsInRoom(identity, room, out int _))
+        {
+            return Unauthorized();
         }
 
         return Ok(roomInvitationService.CreateInvitation(roomId, userId));

@@ -5,6 +5,7 @@ using ChatRooms.Application.InvitationService;
 using ChatRooms.Domain;
 using ChatRooms.FakeInfrastructure;
 using ChatRooms.FakeInfrastructure.Fakers;
+using ChatRooms.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
@@ -70,6 +71,7 @@ builder.Configuration.AddJsonFile("appsettings.json", false);
 builder.Configuration.AddJsonFile($"appsettings.{environmentName}.json", false);
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -116,5 +118,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/signalr");
 
 app.Run();
